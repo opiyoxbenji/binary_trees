@@ -1,18 +1,16 @@
 #include "binary_trees.h"
 /**
  * min_value - fin d node with minimum value
- * @node: root of bst
+ * @root: root of bst
  * Return: node with min value
  */
-bst_t *min_value(bst_t *node)
+bst_t *min_value(bst_t *root)
 {
-	bst_t *current = node;
-
-	while (current && current->left)
+	while (root->left != NULL)
 	{
-		current = current->left;
+		root = root->left;
 	}
-	return (current);
+	return (root);
 }
 /**
  * bst_remove - remove a node from bst
@@ -22,37 +20,52 @@ bst_t *min_value(bst_t *node)
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	bst_t *temp;
+	bst_t *successor, *node = root, *parent = NULL;
 
 	if (root == NULL)
-	{
 		return (NULL);
-	}
-	if (value < root->n)
+	while (node != NULL)
 	{
-		root->left = bst_remove(root->left, value);
-	}
-	else if (value > root->n)
-	{
-		root->right = bst_remove(root->right, value);
-	}
-	else
-	{
-		if (root->left == NULL)
-		{
-			temp = root->right;
-			free(root);
-			return (temp);
+		if (node->n == value)
+		{	break;
 		}
-		else if (root->right == NULL)
-		{
-			temp = root->left;
-			free(root);
-			return (temp);
-		}
-		temp = min_value(root->right);
-		root->n = temp->n;
-		root->right = bst_remove(root->right, temp->n);
+		parent = node;
+		if (node->n > value)
+			node = node->left;
+		else
+			node = node->right;
 	}
-	return (root);
+	if (node == NULL)
+		return (root);
+	if (node->left == NULL)
+	{
+		if (parent != NULL)
+		{
+			if (parent->left == node)
+				parent->left = node->right;
+			else
+				parent->right = node->right; }
+		else
+			root = node->right;
+		if (node->right != NULL)
+			node->right->parent = parent;
+		free(node); }
+	else if (node->right == NULL)
+	{
+		if (parent != NULL)
+		{
+			if (parent->left == node)
+				parent->left = node->left;
+			else
+				parent->right = node->left;
+		} else
+			root = node->left;
+		if (node->left != NULL)
+			node->left->parent = parent;
+		free(node);
+	} else
+	{	successor = min_value(node->right);
+		node->n = successor->n;
+		node->right = bst_remove(node->right, successor->n);
+	} return (root);
 }
