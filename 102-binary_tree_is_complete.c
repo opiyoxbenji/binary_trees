@@ -15,7 +15,7 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	return (complete_recursion(tree, 0, binary_tree_size(tree)));
 }
 /**
- * complete-recursion - check if tree is complete
+ * complete_recursion - check if tree is complete
  * @tree: pointer to root
  * @index: index of node
  * @size: size of tree
