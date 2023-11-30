@@ -1,5 +1,20 @@
 #include "binary_trees.h"
 /**
+ * min_value - fin d node with minimum value
+ * @node: root of bst
+ * Return: node with min value
+ */
+bst_t *min_value(bst_t *node)
+{
+	bst_t *current = node;
+
+	while (current && current->left)
+	{
+		current = current->left;
+	}
+	return (current);
+}
+/**
  * bst_remove - remove a node from bst
  * @root: pointer to root
  * @value: value to remove
@@ -35,11 +50,7 @@ bst_t *bst_remove(bst_t *root, int value)
 			free(root);
 			return (temp);
 		}
-		temp = root->right;
-		while (temp->left != NULL)
-		{
-			temp = temp->left;
-		}
+		temp = min_value(root->right);
 		root->n = temp->n;
 		root->right = bst_remove(root->right, temp->n);
 	}
