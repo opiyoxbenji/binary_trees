@@ -31,5 +31,9 @@ int binary_tree_is_bst(const binary_tree_t *tree)
 {
 	int prev = INT_MIN;
 
+	if (tree == NULL)
+	{
+		return (0);
+	}
 	return (check_bst(tree, &prev));
 }
