@@ -7,7 +7,7 @@
  */
 avl_t *array_to_avl(int *array, size_t size)
 {
-	avl_t *root = NULL;
+	avl_t *root = NULL, *temp;
 	size_t i;
 
 	if (!array || size == 0)
@@ -18,7 +18,12 @@ avl_t *array_to_avl(int *array, size_t size)
 	{
 		if (avl_insert(&root, array[i]) == NULL)
 		{
-			avl_delete_tree(root);
+			while (root != NULL)
+			{
+				temp = root;
+				root = root->parent;
+				free(temp);
+			}
 			return (NULL);
 		}
 	}
